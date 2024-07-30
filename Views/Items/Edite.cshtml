@@ -1,0 +1,58 @@
+﻿@model EditItemsViewModel
+@{
+    ViewData["Title"] = "Edite";
+}
+
+<form method="post">
+
+
+    <div class=" border p-3 mt-4">
+        <div class=" row p-2 ">
+            <h2 class=" text-primary">
+                Edite Item
+            </h2>
+            <hr />
+            <div asp-validation-summary="All"></div>
+            <div class="mb-3">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" disabled readonly />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class=" mb-3 ">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class=" mb-3 ">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control" required />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class=" mb-3 ">
+                <label asp-for="CategoryId"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="@ViewBag.CategoryList" required>
+                    <option value="">-- Select Category --</option>
+                </select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+            <br />
+            <hr />
+            <div class=" mb-3 ">
+                <button type="submit" class="btn btn-success" style="border-radius: 10px; width:250px;">
+                    <i <i class="bi bi-pencil-fill"></i> &nbsp; Edite Item
+                </button>
+
+                <a asp-action="Index" asp-controller="items" class=" btn btn-primary" style="border-radius: 10px; width:250px;">
+                    <i class="bi bi-skip-backward-circle-fill"></i>&nbsp; Back To Item
+                </a>
+            </div>
+
+
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

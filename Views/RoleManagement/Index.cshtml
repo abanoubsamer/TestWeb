@@ -1,0 +1,72 @@
+﻿@model List<ManageUserRolesViewModel>
+@{
+    ViewData["Title"] = "Manage User Roles";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">Manage User Roles</h2>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>User Name</th>
+                <th>Current Roles</th>
+                <th>Assign New Roles</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.UserName</td>
+                    <td>
+                        @if (user.Roles.Any())
+                        {
+                            <span>@string.Join(", ", user.Roles)</span>
+                        }
+                        else
+                        {
+                            <span>No roles assigned</span>
+                        }
+                    </td>
+                    <td>
+                        <select multiple class="form-control roles-dropdown" data-user-id="@user.UserId">
+                            @foreach (var role in user.AllRoles)
+                            {
+                                <option value="@role" selected="@(user.Roles.Contains(role) ? "selected" : null)">@role</option>
+
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary update-roles-btn" data-user-id="@user.UserId">Update Roles</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.update-roles-btn').click(function () {
+            var userId = $(this).data('user-id');
+            var selectedRoles = $('.roles-dropdown[data-user-id="' + userId + '"]').val();
+            $.ajax({
+                url: '/RoleManagement/UpdateUserRoles',
+                type: 'POST',
+                data: {
+                    userId: userId,
+                    roles: selectedRoles
+                },
+                success: function (response) {
+                    alert('Roles updated successfully!');
+                },
+                error: function (response) {
+                    alert('Error updating roles.');
+                }
+            });
+        });
+    });
+</script>
